@@ -3,6 +3,7 @@
 
     $valid = TRUE;
 
+
     if(!empty($_POST)) {
         extract($_POST);
 
@@ -15,6 +16,7 @@
             $sessionId = $_SESSION['id'];
             $startDate = $date . ' ' . $start;
             $endDate = $date . ' ' . $end ;
+            $weekDay = date('w', strtotime($date));
 
             if(empty($title)){
                 $valid = FALSE;
@@ -59,11 +61,17 @@
                 $valid = FALSE;
                 $err_date = "La date que vous avez choisis n'est pas valide";
             }
+            else if($weekDay == "0" || $weekDay = "6") {
+                $valid = FALSE;
+                $err_date = "Nous ne somme pas ouvert le samedi et le dimanche";
+            }
+
 
             if(empty($description)) {
                 $valid = FALSE;
                 $err_description = "Ce champ ne peut pas être vide";
             }
+
 
             if($valid) {
                 $req = ("INSERT INTO reservations (`titre`, `debut`, `fin`, `description`, `id_utilisateur`) VALUES ('$title', '$startDate', '$endDate', '$description', '$sessionId')");
@@ -89,30 +97,30 @@
     </header>
     <main>
         <form class="form-flex" method="POST">
-            <label for="name"><?php echo $_SESSION['login']?></label>
+            <label class="space" for="name"><?php echo $_SESSION['login']?></label>
 
             <?php if(isset($err_title)) echo($err_title);?>
-            <label for="title">Titre :</label>
-            <input type="text" name="title" placeholder="Veuillez renseigner un titre ...">
+            <label class="space" for="title">Titre :</label>
+            <input class="space input" type="text" name="title" placeholder="Veuillez renseigner un titre ...">
             
             <?php if(isset($err_start)) echo($err_start);?>
-            <label for="start">Heure de début :</label>
-            <input type="time" name="start" min="" max="" step="3600" >
+            <label class="space" for="start">Heure de début :</label>
+            <input class="space input" type="time" name="start" min="" max="" step="3600" >
             
             <?php if(isset($err_end)) echo($err_end);?>
-            <label for="end">Heure de fin :</label>
-            <input type="time" name="end" min="" max="" step="3600">
-            <small>Les horaires de réservations sont de 08H00 a 19H00.</small>
+            <label class="space" for="end">Heure de fin :</label>
+            <input class="space input" type="time" name="end" min="" max="" step="3600">
+            <small class="space">Les horaires de réservations sont de 08H00 a 19H00.</small>
 
             <?php if(isset($err_date)) echo($err_date);?>
-            <label for="date">Date :</label>
-            <input type="date" value="" name="date" min="<?php echo date("Y-d-m"); ?>" max="2024-12-31">
+            <label class="space" for="date">Date :</label>
+            <input class="space input" type="date" value="" name="date" min="<?php echo date("Y-m-d"); ?>" max="2024-12-31">
             
             <?php if(isset($err_description)) echo($err_description);?>
-            <label for="description">Descritpion de l'activité :</label>
+            <label class="space" for="description">Descritpion de l'activité :</label>
             <textarea name="description" cols="30" rows="10"></textarea>
 
-            <input type="submit" name="reserver" value="Réserver">
+            <input class="button space" type="submit" name="reserver" value="Réserver">
         </form>
     </main>
     <footer>
