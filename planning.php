@@ -6,15 +6,6 @@
     $req = mysqli_query($mysqli, $req);
     $req = mysqli_fetch_all($req);
     
-    var_dump($req);
-
-
-    foreach($req as $key => $values) {
-        $hDebut = date("l d F Y H:i", strtotime($values[3]));
-        $hFin = date("l d F Y H:i", strtotime($values['4']));
-        var_dump($hDebut);
-        var_dump($hFin);
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,37 +20,56 @@
         <thead>
             <tr>
                 <td>Réservations</td>
-                <?php   
-                    $currentDate = date('l d F Y', strtotime('last monday'));
-                    for ($x=1 ; $x < 8 ; $x++) {
-                        echo '<th>' . $currentDate . '</th>' ;
-                        $currentDate = date("l d F Y", strtotime($currentDate . ' +1 day'));
-                    }?>
+                <th><?php echo $currentDate = date("l d F Y", strtotime("this week monday")); ?></th>
+                <th><?php echo $currentDate = date("l d F Y", strtotime("this week tuesday")); ?></th>
+                <th><?php echo $currentDate = date("l d F Y", strtotime("this week wednesday")); ?></th>
+                <th><?php echo $currentDate = date("l d F Y", strtotime("this week thursday")); ?></th>
+                <th><?php echo $currentDate = date("l d F Y", strtotime("this week friday")); ?></th>
+                <th><?php echo $currentDate = date("l d F Y", strtotime("this week saturday")); ?></th>
+                <th><?php echo $currentDate = date("l d F Y", strtotime("this week sunday")); ?></th>
             </tr>
         </thead>
         <tbody>
             <?php
-                $currentHour = date('H:i', strtotime('8 am'));
-                for($j = 1; $j < 13; $j++) { 
+                for($j = 8; $j < 20; $j++) { 
                     echo "<tr>";
-                    for($x = 1 ; $x < 8 ; $x++) {
+                    for($x = 1 ; $x < 9 ; $x++) {
                         if($x == 1) { 
-                            echo '<td>' . $currentHour . '</td>' ;
-                            $currentHour = date("H:i", strtotime($currentHour . ' +1 hours'));
-                        }
-                        if($j == $x) {
-                            echo "<td>";
+                            echo '<td>' . $j. ":00" . '</td>' ;
                         }
                         else {
                             echo "<td>";
+                            $dateCompare = date("l-d-Y H:i", strtotime('this week monday ' . $x-2 . ' days ' . $j .' hours'));
+                             foreach($req as $key => $values) {
+                                $hDebut = date("l-d-Y H:i", strtotime($values[3]));
+                                $hFin = date("l-d-Y H:i", strtotime($values[4]));
+
+
+                                $valid = FALSE;
+
+                                if($hDebut == $dateCompare) {
+                                    $valid = TRUE;
+                                    break;
+                                }                
+                                else if($hFin == $dateCompare) {
+                                    $valid= TRUE;
+                                    break;
+                                }
+                            }
+
+                            if($valid) {
+                                echo "Fait par $values[7],</br> pour $values[1] .</br> Desc : $values[2]";
+                            }else {
+                                echo "<a href='reservation-form.php'>Vous pouvez réserver</a>";
+                            }
+
+                            
+                                
+                            echo "</td>";
                         }
-                        echo "</td>";
                     }
                     echo "</tr>";
-                }
-
-
-
+                }   
             ?>
         </tbody>
     </table>

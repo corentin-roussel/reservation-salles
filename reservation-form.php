@@ -17,6 +17,7 @@
             $startDate = $date . ' ' . $start;
             $endDate = $date . ' ' . $end ;
             $weekDay = date('w', strtotime($date));
+            var_dump($weekDay);
 
             if(empty($title)){
                 $valid = FALSE;
@@ -115,6 +116,7 @@
             <?php if(isset($err_date)) echo($err_date);?>
             <label class="space" for="date">Date :</label>
             <input class="space input" type="date" value="" name="date" min="<?php echo date("Y-m-d"); ?>" max="2024-12-31">
+            <small class="space">Nous sommes fermés le samedi et le dimanche</small>
             
             <?php if(isset($err_description)) echo($err_description);?>
             <label class="space" for="description">Descritpion de l'activité :</label>
