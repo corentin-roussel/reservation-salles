@@ -62,7 +62,7 @@
                 $valid = FALSE;
                 $err_date = "La date que vous avez choisis n'est pas valide";
             }
-            else if($weekDay == "0" || $weekDay = "6") {
+            else if($weekDay == "0" || $weekDay == "6") {
                 $valid = FALSE;
                 $err_date = "Nous ne somme pas ouvert le samedi et le dimanche";
             }
